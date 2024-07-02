@@ -6,6 +6,7 @@ import { Op } from "sequelize";
 
 class OrderController {
   static async createOrder(req, res) {
+    console.log("first");
     try {
       const {
         firstDirection,
@@ -19,7 +20,6 @@ class OrderController {
         total,
         orderShippingMethodId,
         orderPaymentMethodId,
-        userId,
       } = req.body;
       if (
         !firstDirection ||
@@ -32,12 +32,11 @@ class OrderController {
         !tax ||
         !total ||
         !orderShippingMethodId ||
-        !orderPaymentMethodId ||
-        !userId
+        !orderPaymentMethodId
       ) {
         throw new Error();
       }
-      const order = await Order.create(req.body);
+      const order = await Order.create({ ...req.body, userId: req.user.id });
       return res.status(201).json(order);
     } catch (error) {
       return res.status(500).json("Error");

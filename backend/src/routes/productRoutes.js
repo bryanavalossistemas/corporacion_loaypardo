@@ -19,7 +19,9 @@ router.get("/active", ProductController.getAllProductsActive);
 
 router.get("/query", ProductController.getAllProductsByQueryAndOrderBy);
 
-router.get("/:id", ProductController.getProduct);
+router.get("/:id", authenticate, authorize, ProductController.getProduct);
+
+router.get("/public/:id", ProductController.getPublicProduct);
 
 router.put(
   "/:id",

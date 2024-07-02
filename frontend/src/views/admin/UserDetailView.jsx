@@ -19,10 +19,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { formatCurrencyPeru } from "@/helpers";
+import { useStore } from "@/store";
 
 export default function UserDetailView() {
   const params = useParams();
   const id = params.id;
+  const authToken = useStore((state) => state.authToken);
   const [user, setUser] = useState({
     id: 0,
     firstName: "",
@@ -83,7 +85,7 @@ export default function UserDetailView() {
         return (
           <Link
             className="flex justify-end underline"
-            to={`/account/orders/${row.getValue("id")}/detail`}
+            to={`/orders/${row.getValue("id")}/view`}
           >
             Ver
           </Link>
@@ -107,9 +109,11 @@ export default function UserDetailView() {
   });
 
   async function fetchUser() {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/users/${id}`,
+      { headers: { Authorization: `Bearer ${authToken}` } }
+    );
     const user = await response.json();
-    console.log(user);
     setUser(user);
     setOrders(
       user.orders.map((order) => {

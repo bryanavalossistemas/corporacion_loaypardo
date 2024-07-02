@@ -32,10 +32,10 @@ export default function ProductDetaiView() {
   async function fetchProduct() {
     try {
       const responseProduct = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/products/${id}`
+        `${import.meta.env.VITE_API_URL}/api/products/public/${id}`
       );
       if (!responseProduct.ok) {
-        throw new Error();
+        throw Error;
       }
       const product = await responseProduct.json();
       setProduct(product);

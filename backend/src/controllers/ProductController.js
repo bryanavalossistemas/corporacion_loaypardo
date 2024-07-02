@@ -123,6 +123,39 @@ class ProductController {
     }
   }
 
+  static async getPublicProduct(req, res) {
+    try {
+      const idParam = req.params.id;
+      const id = Number(idParam);
+      if (Number.isNaN(id) || !Number.isInteger(id)) {
+        throw new Error();
+      }
+      const product = await Product.findByPk(id, {
+        include: [
+          { model: ProductCharacteristic, as: "productCharacteristics" },
+          { model: ProductCategory, as: "productCategory" },
+          { model: ProductBrand, as: "productBrand" },
+          { model: Image, as: "image" },
+        ],
+      });
+      if (!product) {
+        return res.sendStatus(404);
+      }
+      const productFiltered = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.image.url,
+        productCharacteristics: product.productCharacteristics,
+        productCategory: product.productCategory,
+        productBrand: product.productBrand,
+      };
+      return res.status(200).json(productFiltered);
+    } catch (error) {
+      return res.sendStatus(500);
+    }
+  }
+
   static async updateProduct(req, res) {
     try {
       await sequelize.transaction(async (t) => {
@@ -314,7 +347,7 @@ class ProductController {
   static async getAllProductsActive(req, res) {
     try {
       const products = await Product.findAll({
-        include: { model: ProductCategory, as: "productCategory" },
+        include: { model: Image, as: "image" },
         attributes: [
           "id",
           "name",
@@ -323,7 +356,6 @@ class ProductController {
           "stock",
           "active",
           "createdAt",
-          "imageUrl",
         ],
         where: { active: true },
         order: [["createdAt", "DESC"]],
@@ -332,12 +364,7 @@ class ProductController {
         return {
           id: product.id,
           name: product.name,
-          categoryName: product.productCategory.name,
-          price: product.price,
-          createdAt: product.createdAt,
-          stock: product.stock,
-          imageUrl: product.imageUrl,
-          active: product.active,
+          imageUrl: product.image.url,
         };
       });
       return res.status(200).json(filteredProducts);
@@ -364,6 +391,10 @@ class ProductController {
               model: ProductBrand,
               as: "productBrand",
             },
+            {
+              model: Image,
+              as: "image",
+            },
           ],
           where: {
             [Op.or]: [
@@ -376,7 +407,7 @@ class ProductController {
               },
             ],
           },
-          order: [[`${orderBy}`, "DESC"]],
+          order: [[`${orderBy}`, "ASC"]],
         });
       } else {
         products = await Product.findAll({
@@ -388,6 +419,10 @@ class ProductController {
             {
               model: ProductBrand,
               as: "productBrand",
+            },
+            {
+              model: Image,
+              as: "image",
             },
           ],
           where: {

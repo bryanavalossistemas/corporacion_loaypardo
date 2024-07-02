@@ -66,6 +66,28 @@ export class ProductCategoryController {
     }
   }
 
+  static async getAllProductCategoriesPublic(req, res) {
+    try {
+      const productCategories = await ProductCategory.findAll({
+        include: { model: Image, as: "image" },
+        attributes: ["id", "name", "createdAt"],
+        order: [["createdAt", "DESC"]],
+      });
+      const filteredProductCategories = productCategories.map(
+        (productCategory) => {
+          return {
+            id: productCategory.id,
+            name: productCategory.name,
+            imageUrl: productCategory.image.url,
+          };
+        }
+      );
+      return res.status(200).json(filteredProductCategories);
+    } catch (error) {
+      return res.sendStatus(500);
+    }
+  }
+
   static async getProductCategory(req, res) {
     try {
       const idParam = req.params.id;

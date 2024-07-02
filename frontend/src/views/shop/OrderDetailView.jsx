@@ -5,7 +5,6 @@ import CheckoutInput from "@/components/shop/CheckoutInput";
 import OrderItem from "@/components/shop/OrderItem";
 import SummaryOrderItem from "@/components/shop/SummaryOrderItem";
 import { useEffect, useState } from "react";
-import { useStore } from "@/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,6 @@ export default function OrderDetailView() {
   const params = useParams();
   const id = params.id;
   const navigate = useNavigate();
-  const currentUser = useStore((state) => state.currentUser);
 
   const [orderShippingMethods, setOrderShippingMethods] = useState([]);
   const [orderPaymentMethods, setOrderPaymentMethods] = useState([]);
@@ -61,22 +59,6 @@ export default function OrderDetailView() {
     }
   }
 
-  async function verifySession() {
-    try {
-      if (!currentUser) {
-        navigate("/auth/login");
-      }
-      const responseUser = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/${currentUser.id}`
-      );
-      if (!responseUser.ok) {
-        navigate("/auth/login");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async function fetchOrderShippingMethodsAndOrderPaymentMethodsAndOrder() {
     try {
       const responseOrderShippingMethods = await fetch(
@@ -115,7 +97,6 @@ export default function OrderDetailView() {
   }
 
   useEffect(() => {
-    verifySession();
     fetchOrderShippingMethodsAndOrderPaymentMethodsAndOrder();
   }, []);
 

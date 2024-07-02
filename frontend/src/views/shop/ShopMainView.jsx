@@ -15,10 +15,10 @@ export default function ShopMainView() {
   async function fetchProductCategoriesAndFetchProducts() {
     try {
       const responseProductCategories = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/productCategories`
+        `${import.meta.env.VITE_API_URL}/api/productCategories/public`
       );
       if (!responseProductCategories.ok) {
-        throw new Error();
+        throw Error;
       }
       const productCategories = await responseProductCategories.json();
       setProductCategories(productCategories);
@@ -27,7 +27,7 @@ export default function ShopMainView() {
         `${import.meta.env.VITE_API_URL}/api/products/active`
       );
       if (!responseProducts.ok) {
-        throw new Error();
+        throw Error;
       }
       const products = await responseProducts.json();
       setProducts(products);
@@ -85,57 +85,55 @@ export default function ShopMainView() {
       <div className="px-16">
         <h2 className="text-3xl uppercase mb-12">Nuevos</h2>
 
-        {productCategories.length >= 3 && (
-          <div className="h-[539px] flex gap-x-6 mb-9">
-            <div className="flex flex-col flex-1 gap-y-9">
+        <div className="h-[539px] flex gap-x-6 mb-9">
+          <div className="flex flex-col flex-1 gap-y-9">
+            <img
+              className="h-[400px] flex justify-center items-center bg-white object-contain"
+              src={productCategories[0]?.imageUrl}
+            />
+            <div className="flex flex-col gap-y-4">
+              <p className="text-2xl">{productCategories[0]?.name}</p>
+              <Link
+                className="text-sm underline"
+                to={`/productCategories/${productCategories[0]?.id}/detail`}
+              >
+                Ver categoría
+              </Link>
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col gap-y-5">
+            <div className="flex flex-col gap-y-4">
               <img
-                className="h-[400px] flex justify-center items-center bg-white object-contain"
-                src={productCategories[0]?.imageUrl}
+                className="h-[186px] flex justify-center items-center object-contain bg-white"
+                src={productCategories[1]?.imageUrl}
               />
-              <div className="flex flex-col gap-y-4">
-                <p className="text-2xl">{productCategories[0]?.name}</p>
+              <div className="flex flex-col gap-y-1">
+                <p className="text-2xl">{productCategories[1]?.name}</p>
                 <Link
                   className="text-sm underline"
-                  to={`/productCategories/${productCategories[0]?.id}/detail`}
+                  to={`/productCategories/${productCategories[1]?.id}/detail`}
                 >
                   Ver categoría
                 </Link>
               </div>
             </div>
-            <div className="flex-1 flex flex-col gap-y-5">
-              <div className="flex flex-col gap-y-4">
-                <img
-                  className="h-[186px] flex justify-center items-center object-contain bg-white"
-                  src={productCategories[1]?.imageUrl}
-                />
-                <div className="flex flex-col gap-y-1">
-                  <p className="text-2xl">{productCategories[1]?.name}</p>
-                  <Link
-                    className="text-sm underline"
-                    to={`/productCategories/${productCategories[1]?.id}/detail`}
-                  >
-                    Ver categoría
-                  </Link>
-                </div>
-              </div>
-              <div className="flex flex-col gap-y-4">
-                <img
-                  className="h-[186px] flex justify-center items-center bg-white object-contain"
-                  src={productCategories[2]?.imageUrl}
-                />
-                <div className="flex flex-col gap-y-1">
-                  <p className="text-2xl">{productCategories[2]?.name}</p>
-                  <Link
-                    className="text-sm underline"
-                    to={`/productCategories/${productCategories[2]?.id}/detail`}
-                  >
-                    Ver categoría
-                  </Link>
-                </div>
+            <div className="flex flex-col gap-y-4">
+              <img
+                className="h-[186px] flex justify-center items-center bg-white object-contain"
+                src={productCategories[2]?.imageUrl}
+              />
+              <div className="flex flex-col gap-y-1">
+                <p className="text-2xl">{productCategories[2]?.name}</p>
+                <Link
+                  className="text-sm underline"
+                  to={`/productCategories/${productCategories[2]?.id}/detail`}
+                >
+                  Ver categoría
+                </Link>
               </div>
             </div>
           </div>
-        )}
+        </div>
 
         <div className="flex justify-between">
           {products.slice(0, 5).map((product) => (

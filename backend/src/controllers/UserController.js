@@ -250,7 +250,7 @@ export class UserController {
 
   static async getAllUsers(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({ where: { role: "USER" } });
       return res.status(200).json(users);
     } catch (error) {
       return res.status(500).json("Error");
@@ -258,6 +258,7 @@ export class UserController {
   }
 
   static async getUser(req, res) {
+    console.log("req.params.id");
     try {
       const idParam = req.params.id;
       const id = Number(idParam);

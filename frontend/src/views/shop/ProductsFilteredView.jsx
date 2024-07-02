@@ -21,7 +21,10 @@ export default function ProductsFilteredView() {
         throw new Error();
       }
       const products = await responseProducts.json();
-      setProducts(products);
+      const productsFiltered = products.map((product) => {
+        return { ...product, imageUrl: product.image.url };
+      });
+      setProducts(productsFiltered);
     } catch (error) {
       toast.error("No se pudo obtener los productos");
     }

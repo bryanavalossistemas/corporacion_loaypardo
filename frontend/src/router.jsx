@@ -50,8 +50,7 @@ export default function Router() {
             path="/orderSuccess"
             element={<OrderCreatedSuccessfullyView />}
           />
-          <Route path="/orders/:id/view" element={<OrderDetailView />} />
-
+          
           <Route path="/auth/login" element={<LoginView />} />
           <Route path="/auth/register" element={<RegisterView />} />
           <Route path="/auth/confirm" element={<ConfirmView />} />
@@ -71,6 +70,8 @@ export default function Router() {
           <Route path="/checkout" element={<CheckoutView />} />
 
           <Route path="/account/orders" element={<UserOrdersView />} />
+          <Route path="/orders/:id/view" element={<OrderDetailView />} />
+          
           <Route path="/account/data" element={<UserDataView />} />
           <Route
             path="/account/change-password"

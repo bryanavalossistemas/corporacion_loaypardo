@@ -4,7 +4,7 @@ import { authenticate } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.post("/", OrderController.createOrder);
+router.post("/", authenticate, OrderController.createOrder);
 
 router.get("/", OrderController.getAllOrders);
 

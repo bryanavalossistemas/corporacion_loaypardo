@@ -27,6 +27,7 @@ export default function HeaderNavs() {
   const location = useLocation();
   const cart = useStore((state) => state.cart);
   const authToken = useStore((state) => state.authToken);
+  const logout = useStore((state) => state.logout);
 
   async function navigateToMyAccount() {
     if (!authToken) {
@@ -79,6 +80,15 @@ export default function HeaderNavs() {
             {cart.length}
           </Button>
         </Link>
+        {authToken ? (
+          <Button className="rounded-none py-4 px-8" onClick={logout}>
+            CERRAR SESIÓN
+          </Button>
+        ) : (
+          <Link to="/auth/login">
+            <Button className="rounded-none py-4 px-8">INICIAR SESIÓN</Button>
+          </Link>
+        )}
         <Button
           className="rounded-none py-4 px-8"
           onClick={navigateToMyAccount}

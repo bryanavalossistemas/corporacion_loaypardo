@@ -19,9 +19,11 @@ export default function SavedItem({ savedItem }) {
 
   return (
     <div className="bg-white h-[179px] flex items-center pl-[22px] pr-[40px] justify-between py-[29px] shadow-xl">
-      <div className="w-[143px]">
-        <img className="object-cover" src={savedItem.imageUrl} alt="imagen del producto h-[121px]" />
-      </div>
+      <img
+        className="w-[143px] h-[121px] object-cover"
+        src={savedItem.imageUrl}
+        alt="imagen del producto"
+      />
       <div className="w-[640px] flex flex-col h-full justify-between py-3">
         <p className="font-bold text-2xl">{savedItem.name}</p>
         <div className="flex gap-x-5">

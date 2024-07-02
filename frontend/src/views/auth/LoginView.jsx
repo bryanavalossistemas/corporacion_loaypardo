@@ -11,7 +11,6 @@ export default function LoginView() {
   const redirectTo = searchParams.get("redirectTo");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const setCurrentUser = useStore((state) => state.setCurrentUser);
   const setAuthToken = useStore((state) => state.setAuthToken);
   const [submiting, setSubmiting] = useState(false);
 
@@ -41,7 +40,6 @@ export default function LoginView() {
         throw new Error();
       }
       const authToken = await response.json();
-      setCurrentUser(authToken);
       setAuthToken(authToken);
       if (redirectTo) {
         navigate(`${redirectTo}`);

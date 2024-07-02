@@ -49,7 +49,7 @@ export default function DashboardView() {
         <SideBar />
         <div className="flex-grow flex flex-col gap-y-4">
           <div className="flex justify-between items-center bg-lime-500 pl-6 pr-2 py-2">
-            <h2 className="font-bold">Dashboard</h2>
+            <h2 className="font-bold">DASHBOARD</h2>
             <div className="flex items-center gap-x-2">
               <span className="font-medium">Cambiar fecha o periodo</span>
               <input

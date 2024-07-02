@@ -20,6 +20,11 @@ productCategoryRoutes.get(
   ProductCategoryController.getAllProductCategories
 );
 
+productCategoryRoutes.get(
+  "/public",
+  ProductCategoryController.getAllProductCategoriesPublic
+);
+
 productCategoryRoutes.get("/:id", ProductCategoryController.getProductCategory);
 
 productCategoryRoutes.put(

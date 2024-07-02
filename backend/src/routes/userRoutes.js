@@ -1,6 +1,6 @@
 import { UserController } from "../controllers/UserController.js";
 import { Router } from "express";
-import { authenticate } from "../middlewares/auth.js";
+import { authenticate, authorize } from "../middlewares/auth.js";
 
 export const userRoutes = Router();
 
@@ -25,9 +25,11 @@ userRoutes.get("/", UserController.getAllUsers);
 
 userRoutes.get("/createdAt", UserController.getUsersByCreatedAt);
 
-userRoutes.get("/user/data", authenticate, UserController.getUserData);
-
 userRoutes.get("/user", authenticate, UserController.getUserAuthenticated);
+
+userRoutes.get("/:id", authenticate, authorize, UserController.getUser);
+
+userRoutes.get("/user/data", authenticate, UserController.getUserData);
 
 userRoutes.get("/user/role", authenticate, UserController.getUserRole);
 

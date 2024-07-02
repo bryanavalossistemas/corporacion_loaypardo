@@ -13,7 +13,7 @@ import { formatCurrencyPeru } from "@/helpers";
 
 export default function CheckoutView() {
   const navigate = useNavigate();
-  const currentUser = useStore((state) => state.currentUser);
+  const authToken = useStore((state) => state.authToken);
 
   const [cardNumber, setCardNumber] = useState("");
   const [nameOnCard, setNameOnCard] = useState("");
@@ -76,24 +76,25 @@ export default function CheckoutView() {
         {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             ...order,
-            userId: currentUser.id,
             lastFourNumbersPay: cardNumber.slice(cardNumber.length - 4),
           }),
         }
       );
       if (!responseOrder.ok) {
         setSubmiting(false);
-        throw new Error();
+        throw Error;
       }
       const orderCreated = await responseOrder.json();
       const orderDetailsCreated = cart.map((cartItem) => {
         return fetch(`${import.meta.env.VITE_API_URL}/api/orderDetails`, {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -106,11 +107,11 @@ export default function CheckoutView() {
 
       await Promise.all([orderDetailsCreated]);
       clearCart();
-      navigate("/orderSuccess");
       toast.success("Orden creada correctamente");
+      navigate("/orderSuccess");
     } catch (error) {
       setSubmiting(false);
-      toast.error("Error al crear la order");
+      toast.error("Error al crear la orden");
     }
   }
 
